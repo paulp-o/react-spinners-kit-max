@@ -48,30 +48,35 @@ describe("Spinner", () => {
     expect(screen.getByRole("status")).toBeInTheDocument();
   });
 
-  it("applies named size classes", () => {
+  it("maps named sizes to pixel values for styled spinners", () => {
     const { rerender } = render(<Spinner variant="ball" size="sm" />);
-    expect(screen.getByRole("status")).toHaveClass("w-4", "h-4");
+    let spinner = screen.getByRole("status");
+    expect(spinner.innerHTML).toContain('size="20"');
 
     rerender(<Spinner variant="ball" size="md" />);
-    expect(screen.getByRole("status")).toHaveClass("w-8", "h-8");
+    spinner = screen.getByRole("status");
+    expect(spinner.innerHTML).toContain('size="40"');
 
     rerender(<Spinner variant="ball" size="lg" />);
-    expect(screen.getByRole("status")).toHaveClass("w-12", "h-12");
+    spinner = screen.getByRole("status");
+    expect(spinner.innerHTML).toContain('size="60"');
 
     rerender(<Spinner variant="ball" size="xl" />);
-    expect(screen.getByRole("status")).toHaveClass("w-16", "h-16");
+    spinner = screen.getByRole("status");
+    expect(spinner.innerHTML).toContain('size="80"');
   });
 
-  it("applies custom numeric size via inline styles and css variable", () => {
+  it("applies custom numeric size to styled spinner renderers", () => {
     render(<Spinner variant="ball" size={48} />);
     const spinner = screen.getByRole("status");
-    expect(spinner).toHaveStyle({ width: "48px", height: "48px" });
-    expect(spinner.style.getPropertyValue("--spinner-size")).toBe("48px");
+    expect(spinner.innerHTML).toContain('size="48"');
+    expect(spinner.style.width).toBe("");
+    expect(spinner.style.height).toBe("");
   });
 
-  it("defaults size to md", () => {
+  it("defaults size to md pixel value", () => {
     render(<Spinner variant="ball" />);
-    expect(screen.getByRole("status")).toHaveClass("w-8", "h-8");
+    expect(screen.getByRole("status").innerHTML).toContain('size="40"');
   });
 
   it("has role=status and default aria-label", () => {

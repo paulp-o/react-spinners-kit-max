@@ -77,26 +77,23 @@ const renderers = [
 ] as const;
 
 describe("all spinner render functions", () => {
-  it.each(renderers)("%s returns jsx with animation styles/classes", (_name, rendererFn) => {
+  it.each(renderers)("%s returns styled-components jsx", (_name, rendererFn) => {
     const { container } = render(<>{rendererFn({ size: 40 } as never)}</>);
     const root = container.firstElementChild as HTMLElement | null;
 
     expect(root).toBeTruthy();
     const elements = [root, ...Array.from(root?.querySelectorAll("*") ?? [])] as HTMLElement[];
-    const hasAnimation = elements.some((element) => {
+    const hasStyledClass = elements.some((element) => {
       const className = element.className;
-      const hasAnimationClass =
-        typeof className === "string" && className.includes("animate");
-      const hasAnimationStyle = element.style.animation.length > 0;
-      return hasAnimationClass || hasAnimationStyle;
+      return typeof className === "string" && /(^|\s)sc-[A-Za-z0-9-]+(\s|$)/.test(className);
     });
 
-    expect(hasAnimation).toBe(true);
+    expect(hasStyledClass).toBe(true);
   });
 
-  it("ball references --spinner-size css variable", () => {
+  it("ball forwards numeric size to styled component tree", () => {
     const { container } = render(<>{renderBall({ size: 40 } as never)}</>);
-    expect(container.innerHTML).toContain("spinner-size");
+    expect(container.innerHTML).toContain('size="40"');
   });
 
   it("cube renders exactly 6 face elements", () => {
@@ -113,14 +110,14 @@ describe("all spinner render functions", () => {
     expect(root?.children.length).toBe(9);
   });
 
-  it("jellyfish renders ring elements with staggered delays", () => {
+  it("jellyfish renders ring elements with styled class variations", () => {
     const { container } = render(<>{renderJellyfish({ size: 40 } as never)}</>);
     const root = container.firstElementChild as HTMLElement | null;
     expect(root?.children.length).toBe(6);
 
-    const delays = Array.from(root?.children ?? []).map(
-      (child) => (child as HTMLElement).style.animationDelay,
+    const childClassNames = Array.from(root?.children ?? []).map(
+      (child) => (child as HTMLElement).className,
     );
-    expect(delays.some((delay) => delay.length > 0)).toBe(true);
+    expect(new Set(childClassNames).size).toBeGreaterThan(1);
   });
 });

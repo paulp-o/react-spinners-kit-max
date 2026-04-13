@@ -1,56 +1,76 @@
-import type { CSSProperties } from "react";
+import styled, { keyframes } from "styled-components";
 import type { InternalRenderProps } from "../types";
+
+const motionPlayer = (props: any) => keyframes`
+  0% {
+    top: ${props.left ? 0 : props.size / 3.5}px;
+  }
+  50% {
+    top: ${props.left ? props.size / 3.5 : 0}px;
+  }
+  100% {
+    top: ${props.left ? 0 : props.size / 3.5}px;
+  }
+`;
+
+const motionBall = (props: any) => keyframes`
+  0% {
+    top: ${props.size / 3.5 - props.size / 8}px;
+    left: ${props.size / 12}px;
+  }
+  25% {
+    top: ${props.size / 3.5}px;
+    left: ${props.size - props.size / 8}px;
+  }
+  50% {
+    top: ${props.size / 1.75 - props.size / 8}px;
+    left: ${props.size / 12}px;
+  }
+  75% {
+    top: ${props.size / 3.5}px;
+    left: ${props.size - props.size / 8}px;
+  }
+  100% {
+    top: ${props.size / 3.5 - props.size / 8}px;
+    left: ${props.size / 12}px;
+  }
+`;
+
+const Wrapper = styled.div`
+  position: relative;
+  width: ${(props: any) => `${props.size}px`};
+  height: ${(props: any) => `${props.size / 1.75}px`};
+`;
+
+const Ball = styled.div`
+  position: absolute;
+  width: ${(props: any) => `${props.size / 8}px`};
+  height: ${(props: any) => `${props.size / 8}px`};
+  border-radius: 50%;
+  background-color: ${(props: any) => props.color};
+  animation: ${(props: any) => motionBall(props)} 2s linear infinite;
+`;
+
+const Player = styled.div`
+  position: absolute;
+  width: ${(props: any) => `${props.size / 12}px`};
+  height: ${(props: any) => `${props.size / 3}px`};
+  background-color: ${(props: any) => props.color};
+  left: ${(props: any) => (props.left ? 0 : props.size)};
+  right: ${(props: any) => (props.right ? 0 : props.size)};
+  border-radius: 4px;
+  animation: ${(props: any) => motionPlayer(props)} 2s linear infinite;
+`;
 
 export function renderPong({ size }: InternalRenderProps): React.ReactNode {
   const spinnerSize = size ?? 60;
-  const ballSize = spinnerSize / 8;
-  const playerTopA = spinnerSize / 3.5;
-  const playerTopB = 0;
+  const color = "var(--spinner-color, #4b4c56)";
 
   return (
-    <div
-      style={{
-        position: "relative",
-        width: `${spinnerSize}px`,
-        height: `${spinnerSize / 1.75}px`,
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          width: `${spinnerSize / 12}px`,
-          height: `${spinnerSize / 3}px`,
-          left: 0,
-          borderRadius: 4,
-          backgroundColor: "var(--spinner-color, currentColor)",
-          animation: "spinner-pong-player 2s linear infinite",
-          ["--spinner-pong-player-top-a" as string]: `${playerTopB}px`,
-          ["--spinner-pong-player-top-b" as string]: `${playerTopA}px`,
-        } as CSSProperties}
-      />
-      <div
-        style={{
-          position: "absolute",
-          width: `${ballSize}px`,
-          height: `${ballSize}px`,
-          borderRadius: "50%",
-          backgroundColor: "var(--spinner-color, currentColor)",
-          animation: "spinner-pong-ball 2s linear infinite",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          width: `${spinnerSize / 12}px`,
-          height: `${spinnerSize / 3}px`,
-          right: 0,
-          borderRadius: 4,
-          backgroundColor: "var(--spinner-color, currentColor)",
-          animation: "spinner-pong-player 2s linear infinite",
-          ["--spinner-pong-player-top-a" as string]: `${playerTopA}px`,
-          ["--spinner-pong-player-top-b" as string]: `${playerTopB}px`,
-        } as CSSProperties}
-      />
-    </div>
+    <Wrapper size={spinnerSize}>
+      <Player left color={color} size={spinnerSize} />
+      <Ball color={color} size={spinnerSize} />
+      <Player right color={color} size={spinnerSize} />
+    </Wrapper>
   );
 }

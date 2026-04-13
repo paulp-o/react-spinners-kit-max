@@ -55,127 +55,155 @@ const twoColorSpinners = new Set<SpinnerVariant>([
 
 type PresetSize = "sm" | "md" | "lg" | "xl";
 
-export function Playground() {
-  const [variant, setVariant] = useState<SpinnerVariant>("ball");
-  const [presetSize, setPresetSize] = useState<PresetSize>("md");
-  const [customSize, setCustomSize] = useState<number>(48);
-  const [useCustomSize, setUseCustomSize] = useState(false);
-  const [color, setColor] = useState("#00ff89");
-  const [secondaryColor, setSecondaryColor] = useState("#4b4c56");
+interface PlaygroundProps {
+  selectedVariant: SpinnerVariant;
+  onSelectVariant: (variant: SpinnerVariant) => void;
+}
 
-  const size = useCustomSize ? customSize : presetSize;
+export function Playground({ selectedVariant, onSelectVariant }: PlaygroundProps) {
+  const [presetSize, setPresetSize] = useState<PresetSize>("lg");
+  const [customSize, setCustomSize] = useState(72);
+  const [useCustomSize, setUseCustomSize] = useState(false);
+  const [color, setColor] = useState("#fafafa");
+  const [secondaryColor, setSecondaryColor] = useState("#71717a");
+
+  const size = useCustomSize ? Math.max(12, customSize) : presetSize;
+  const supportsSecondary = twoColorSpinners.has(selectedVariant);
+
   const style = useMemo(
     () =>
       ({
         "--spinner-color": color,
-        "--spinner-secondary-color": secondaryColor,
+        "--spinner-secondary-color": supportsSecondary ? secondaryColor : color,
       }) as React.CSSProperties,
-    [color, secondaryColor],
+    [color, secondaryColor, supportsSecondary],
   );
 
   const usageCode = useMemo(() => {
     const sizeValue = useCustomSize ? customSize : `"${presetSize}"`;
-    const lines = [
-      "import { Spinner } from \"react-spinners-kit-max\";",
-      "import \"react-spinners-kit-max/style.css\";",
+    const styleLine = supportsSecondary
+      ? `const style: CSSProperties = { "--spinner-color": "${color}", "--spinner-secondary-color": "${secondaryColor}" };`
+      : `const style: CSSProperties = { "--spinner-color": "${color}" };`;
+
+    return [
+      'import { Spinner } from "react-spinners-kit-max";',
+      'import type { CSSProperties } from "react";',
       "",
-      `export function Example() {`,
-      `  return <Spinner variant=\"${variant}\" size={${sizeValue}} />;`,
+      styleLine,
+      "",
+      "export function Example() {",
+      `  return <Spinner variant=\"${selectedVariant}\" size={${sizeValue}} style={style} />;`,
       "}",
-    ];
-    return lines.join("\n");
-  }, [variant, useCustomSize, customSize, presetSize]);
+    ].join("\n");
+  }, [selectedVariant, presetSize, useCustomSize, customSize, color, secondaryColor, supportsSecondary]);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
-      <div className="space-y-4 rounded-xl border border-slate-800 bg-slate-900/70 p-4">
+    <div className="grid gap-4 lg:grid-cols-[1.2fr_1fr]">
+      <div className="rounded-2xl border border-zinc-900 bg-zinc-950 p-6">
+        <p className="mb-3 text-[11px] uppercase tracking-[0.18em] text-zinc-500">Preview</p>
+        <div className="flex min-h-[320px] items-center justify-center rounded-xl border border-zinc-900 bg-black">
+          <div style={style}>
+            <Spinner variant={selectedVariant} size={size} />
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-4 rounded-2xl border border-zinc-900 bg-zinc-950 p-4">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-slate-200" htmlFor="variant">
+          <label htmlFor="variant" className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">
             Variant
           </label>
           <select
             id="variant"
-            value={variant}
-            onChange={(event) => setVariant(event.target.value as SpinnerVariant)}
-            className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm"
+            value={selectedVariant}
+            onChange={(event) => onSelectVariant(event.target.value as SpinnerVariant)}
+            className="w-full rounded-md border border-zinc-800 bg-black px-3 py-2 text-sm text-zinc-100 outline-none focus:border-zinc-600"
           >
-            {variants.map((item) => (
-              <option key={item} value={item}>
-                {item}
+            {variants.map((variant) => (
+              <option key={variant} value={variant}>
+                {variant}
               </option>
             ))}
           </select>
         </div>
 
         <div className="space-y-2">
-          <p className="text-sm font-medium text-slate-200">Size presets</p>
-          <div className="flex flex-wrap gap-2">
+          <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">Size</p>
+          <div className="flex gap-2">
             {(["sm", "md", "lg", "xl"] as const).map((item) => (
               <button
                 key={item}
                 type="button"
                 onClick={() => {
-                  setUseCustomSize(false);
                   setPresetSize(item);
+                  setUseCustomSize(false);
                 }}
-                className={`rounded px-3 py-1.5 text-sm ${
+                className={`rounded-md border px-3 py-1.5 text-xs font-medium transition ${
                   !useCustomSize && presetSize === item
-                    ? "bg-emerald-500 text-slate-950"
-                    : "bg-slate-800 text-slate-200 hover:bg-slate-700"
+                    ? "border-zinc-100 bg-zinc-100 text-black"
+                    : "border-zinc-800 bg-black text-zinc-300 hover:text-zinc-100"
                 }`}
               >
                 {item}
               </button>
             ))}
           </div>
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-slate-200" htmlFor="custom-size">
-            Custom size (px)
-          </label>
           <input
-            id="custom-size"
-            type="number"
-            min={8}
-            max={300}
+            type="range"
+            min={16}
+            max={180}
             value={customSize}
             onChange={(event) => {
               setUseCustomSize(true);
               setCustomSize(Number(event.target.value));
             }}
-            className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm"
+            className="w-full accent-zinc-100"
+          />
+          <input
+            type="number"
+            min={16}
+            max={240}
+            value={customSize}
+            onChange={(event) => {
+              setUseCustomSize(true);
+              setCustomSize(Number(event.target.value));
+            }}
+            className="w-full rounded-md border border-zinc-800 bg-black px-3 py-2 text-sm text-zinc-100 outline-none focus:border-zinc-600"
           />
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <label className="space-y-2 text-sm font-medium text-slate-200">
-            Primary color
+        <div className="grid gap-3 sm:grid-cols-2">
+          <label className="space-y-2">
+            <span className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">Primary</span>
             <input
               type="color"
               value={color}
               onChange={(event) => setColor(event.target.value)}
-              className="h-10 w-full rounded-md border border-slate-700 bg-slate-950 p-1"
+              className="h-10 w-full rounded-md border border-zinc-800 bg-black p-1"
             />
           </label>
-          <label className="space-y-2 text-sm font-medium text-slate-200">
-            Secondary color
+
+          <label className="space-y-2">
+            <span className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">Secondary</span>
             <input
               type="color"
               value={secondaryColor}
               onChange={(event) => setSecondaryColor(event.target.value)}
-              className="h-10 w-full rounded-md border border-slate-700 bg-slate-950 p-1"
-              disabled={!twoColorSpinners.has(variant)}
+              disabled={!supportsSecondary}
+              className="h-10 w-full rounded-md border border-zinc-800 bg-black p-1 disabled:cursor-not-allowed disabled:opacity-40"
             />
           </label>
         </div>
-      </div>
 
-      <div className="space-y-4 rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-        <div className="flex min-h-44 items-center justify-center rounded-lg border border-dashed border-slate-700 bg-slate-950/70">
-          <Spinner variant={variant} size={size} style={style} />
-        </div>
-        <CodeBlock usageCode={usageCode} />
+        <CodeBlock
+          tabs={[
+            {
+              id: "usage",
+              label: "Usage",
+              code: usageCode,
+            },
+          ]}
+        />
       </div>
     </div>
   );

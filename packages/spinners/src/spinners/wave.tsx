@@ -1,42 +1,64 @@
+import styled, { keyframes } from "styled-components";
 import type { InternalRenderProps } from "../types";
 
-export function renderWave({ size }: InternalRenderProps): React.ReactNode {
-  return (
-    <div
-      className="relative flex items-center justify-center overflow-hidden"
-      style={
-        {
-          width: "250%",
-          height: "100%",
-          ...(size ? { "--spinner-size": `${size}px` } : {}),
-        } as React.CSSProperties
-      }
-    >
-      {Array.from({ length: 10 }, (_, index) => {
-        const unit = size ?? 30;
-        const x = index * (unit / 5 + (unit / 15 - unit / 100));
-        const xRatio = x / unit;
+const motion = keyframes`
+  25% {
+    transform: skewY(25deg);
+  }
+  50% {
+    height: 100%;
+    margin-top: 0;
+  }
+  75% {
+    transform: skewY(-25deg);
+  }
+`;
 
-        return (
-          <div
-            key={`wave-${index}`}
-            className="absolute"
-            style={
-              {
-                top: "10%",
-                left: `calc(var(--spinner-size, 30px) * ${xRatio})`,
-                width: "calc(var(--spinner-size, 30px) / 5)",
-                height: "calc(var(--spinner-size, 30px) / 10)",
-                marginTop: "calc(var(--spinner-size, 30px) - var(--spinner-size, 30px) / 10)",
-                transform: "skewY(0deg)",
-                backgroundColor: "var(--spinner-color, currentColor)",
-                animation: "spinner-wave 1.25s ease-in-out infinite",
-                animationDelay: `${index * 0.15}s`,
-              } as React.CSSProperties
-            }
-          />
-        );
-      })}
-    </div>
-  );
+const Wrapper = styled.div<any>`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: ${(props) => `${props.size * 2.5}${props.sizeUnit}`};
+  height: ${(props) => `${props.size}${props.sizeUnit}`};
+  overflow: hidden;
+`;
+
+const Bar = styled.div<any>`
+  position: absolute;
+  top: ${(props) => `${props.y + props.size / 10}${props.sizeUnit}`};
+  left: ${(props) => `${props.x}${props.sizeUnit}`};
+  width: ${(props) => `${props.size / 5}${props.sizeUnit}`};
+  height: ${(props) => `${props.size / 10}${props.sizeUnit}`};
+  margin-top: ${(props) => `${props.size - props.size / 10}${props.sizeUnit}`};
+  transform: skewY(0deg);
+  background-color: ${(props) => props.color};
+  animation: ${motion} 1.25s ease-in-out infinite;
+  animation-delay: ${(props) => props.index * 0.15}s;
+`;
+
+const getBars = ({ countBars, color, size, sizeUnit }: any) => {
+  const bars = [];
+  for (let i = 0; i < countBars; i++) {
+    bars.push(
+      <Bar
+        color={color}
+        size={size}
+        x={i * (size / 5 + (size / 15 - size / 100))}
+        y={0}
+        key={i.toString()}
+        index={i}
+        sizeUnit={sizeUnit}
+      />,
+    );
+  }
+  return bars;
+};
+
+export function renderWave({ size }: InternalRenderProps): React.ReactNode {
+  const s = size ?? 30;
+  const color = "var(--spinner-color, #fff)";
+  const countBars = 10;
+
+  return <Wrapper size={s} sizeUnit="px">{getBars({ countBars, color, size: s, sizeUnit: "px" })}</Wrapper>;
 }

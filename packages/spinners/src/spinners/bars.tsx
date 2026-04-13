@@ -1,37 +1,59 @@
+import styled, { keyframes } from "styled-components";
 import type { InternalRenderProps } from "../types";
 
-export function renderBars({ size }: InternalRenderProps): React.ReactNode {
-  return (
-    <div
-      className="relative flex items-center justify-center"
-      style={
-        {
-          width: "100%",
-          height: "100%",
-          ...(size ? { "--spinner-size": `${size}px` } : {}),
-        } as React.CSSProperties
-      }
-    >
-      {Array.from({ length: 5 }, (_, index) => {
-        const xRatio = ((index * (((size ?? 40) / 5 + (size ?? 40) / 25) - (size ?? 40) / 12)) / (size ?? 40));
+const motion = (props: any) => keyframes`
+  0% {
+    width: ${props.size / 20}${props.sizeUnit}
+  }
+  50% {
+    width: ${props.size / 6}${props.sizeUnit}
+  }
+  100% {
+    width: ${props.size / 20}${props.sizeUnit}
+  }
+`;
 
-        return (
-          <div
-            key={`bars-${index}`}
-            className="absolute"
-            style={
-              {
-                left: `calc(var(--spinner-size, 40px) * ${xRatio})`,
-                width: "calc(var(--spinner-size, 40px) / 20)",
-                height: "100%",
-                backgroundColor: "var(--spinner-color, currentColor)",
-                animation: "spinner-bars 1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite",
-                animationDelay: `${index * 0.15}s`,
-              } as React.CSSProperties
-            }
-          />
-        );
-      })}
-    </div>
-  );
+const Wrapper = styled.div<any>`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: ${(props) => `${props.size}${props.sizeUnit}`};
+  height: ${(props) => `${props.size}${props.sizeUnit}`};
+`;
+
+const Bar = styled.div<any>`
+  position: absolute;
+  top: ${(props) => `${props.y}${props.sizeUnit}`};
+  left: ${(props) => `${props.x}${props.sizeUnit}`};
+  width: ${(props) => `${props.size / 20}${props.sizeUnit}`};
+  height: ${(props) => `${props.size}${props.sizeUnit}`};
+  background-color: ${(props) => props.color};
+  animation: ${motion} 1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+  animation-delay: ${(props) => props.index * 0.15}s;
+`;
+
+const getBars = (countBars: number, color: string, size: number, sizeUnit: string) => {
+  const bars = [];
+  for (let i = 0; i < countBars; i++) {
+    bars.push(
+      <Bar
+        color={color}
+        size={size}
+        sizeUnit={sizeUnit}
+        x={i * (size / 5 + size / 25) - size / 12}
+        key={i.toString()}
+        index={i}
+      />,
+    );
+  }
+  return bars;
+};
+
+export function renderBars({ size }: InternalRenderProps): React.ReactNode {
+  const s = size ?? 40;
+  const color = "var(--spinner-color, #00ff89)";
+  const countBars = 5;
+
+  return <Wrapper size={s} sizeUnit="px">{getBars(countBars, color, s, "px")}</Wrapper>;
 }

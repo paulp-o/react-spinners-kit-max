@@ -1,73 +1,69 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-interface CodeBlockProps {
-  usageCode: string;
-  shadcnCommand?: string;
-  npmCommand?: string;
+interface CodeTab {
+  id: string;
+  label: string;
+  code: string;
 }
 
-export function CodeBlock({
-  usageCode,
-  shadcnCommand = "npx shadcn@latest add https://paulp-o.github.io/react-spinners-kit-max/r/spinner.json",
-  npmCommand = "npm install react-spinners-kit-max",
-}: CodeBlockProps) {
-  const [copied, setCopied] = useState<string | null>(null);
+interface CodeBlockProps {
+  tabs: CodeTab[];
+  defaultTab?: string;
+}
 
-  async function onCopy(value: string, label: string) {
-    await navigator.clipboard.writeText(value);
-    setCopied(label);
-    window.setTimeout(() => setCopied(null), 1200);
+export function CodeBlock({ tabs, defaultTab }: CodeBlockProps) {
+  const [activeTab, setActiveTab] = useState(defaultTab ?? tabs[0]?.id ?? "");
+  const [copied, setCopied] = useState(false);
+
+  const currentTab = useMemo(
+    () => tabs.find((tab) => tab.id === activeTab) ?? tabs[0],
+    [activeTab, tabs],
+  );
+
+  async function handleCopy() {
+    if (!currentTab) return;
+    await navigator.clipboard.writeText(currentTab.code);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1200);
   }
 
+  if (!currentTab) return null;
+
   return (
-    <div className="space-y-3">
-      <div className="rounded-lg border border-slate-700 bg-slate-950/80 p-3">
-        <div className="mb-2 flex items-center justify-between text-xs text-slate-300">
-          <span>shadcn install</span>
-          <button
-            type="button"
-            onClick={() => onCopy(shadcnCommand, "shadcn")}
-            className="rounded bg-slate-800 px-2 py-1 hover:bg-slate-700"
-          >
-            {copied === "shadcn" ? "Copied" : "Copy"}
-          </button>
+    <div className="group relative rounded-xl border border-zinc-800 bg-zinc-950 p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <div className="inline-flex rounded-md border border-zinc-800 bg-black p-1">
+          {tabs.map((tab) => {
+            const isActive = tab.id === currentTab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+                className={`rounded px-2.5 py-1 text-[11px] font-medium transition ${
+                  isActive
+                    ? "bg-zinc-100 text-black"
+                    : "text-zinc-400 hover:text-zinc-200"
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
         </div>
-        <pre className="overflow-x-auto text-xs text-emerald-300">
-          <code>{shadcnCommand}</code>
-        </pre>
+
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="rounded border border-zinc-800 bg-black px-2 py-1 text-[11px] text-zinc-400 opacity-0 transition group-hover:opacity-100 hover:text-zinc-100"
+        >
+          {copied ? "Copied!" : "Copy"}
+        </button>
       </div>
 
-      <div className="rounded-lg border border-slate-700 bg-slate-950/80 p-3">
-        <div className="mb-2 flex items-center justify-between text-xs text-slate-300">
-          <span>npm install</span>
-          <button
-            type="button"
-            onClick={() => onCopy(npmCommand, "npm")}
-            className="rounded bg-slate-800 px-2 py-1 hover:bg-slate-700"
-          >
-            {copied === "npm" ? "Copied" : "Copy"}
-          </button>
-        </div>
-        <pre className="overflow-x-auto text-xs text-emerald-300">
-          <code>{npmCommand}</code>
-        </pre>
-      </div>
-
-      <div className="rounded-lg border border-slate-700 bg-slate-950/80 p-3">
-        <div className="mb-2 flex items-center justify-between text-xs text-slate-300">
-          <span>Usage</span>
-          <button
-            type="button"
-            onClick={() => onCopy(usageCode, "usage")}
-            className="rounded bg-slate-800 px-2 py-1 hover:bg-slate-700"
-          >
-            {copied === "usage" ? "Copied" : "Copy"}
-          </button>
-        </div>
-        <pre className="overflow-x-auto text-xs text-emerald-300">
-          <code>{usageCode}</code>
-        </pre>
-      </div>
+      <pre className="overflow-x-auto rounded-md border border-zinc-900 bg-black p-3 text-[12px] leading-5 text-zinc-300">
+        <code>{currentTab.code}</code>
+      </pre>
     </div>
   );
 }

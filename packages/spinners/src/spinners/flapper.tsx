@@ -1,5 +1,36 @@
-import type { CSSProperties } from "react";
+import styled, { keyframes } from "styled-components";
 import type { InternalRenderProps } from "../types";
+
+const move = (props: any) => keyframes`
+  100% {
+    opacity: 0;
+    transform: translateX(${props.x}px)
+      translateY(${props.y}px) scale(1);
+  }
+`;
+
+const Wrapper = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: ${(props: any) => `${props.size}px`};
+  height: ${(props: any) => `${props.size}px`};
+`;
+
+const Ball = styled.div`
+  position: absolute;
+  top: ${(props: any) => `${props.size / 2}px`};
+  left: ${(props: any) => `${props.size / 2}px`};
+  width: ${(props: any) => `${props.ballSize}px`};
+  height: ${(props: any) => `${props.ballSize}px`};
+  border-radius: 50%;
+  background-color: ${(props: any) => props.color};
+  transform: translateX(${(props: any) => `${props.x}px`})
+    translateY(${(props: any) => `${props.y}px`}) scale(0);
+  animation: ${(props: any) => move(props)} 0.8s linear infinite;
+  animation-delay: ${(props: any) => props.index * 0.1}s;
+`;
 
 export function renderFlapper({ size }: InternalRenderProps): React.ReactNode {
   const spinnerSize = size ?? 30;
@@ -7,43 +38,25 @@ export function renderFlapper({ size }: InternalRenderProps): React.ReactNode {
   const countBalls = 7;
   const ballSize = spinnerSize / 1.5;
   const angle = 360 / countBalls;
+  const color = "var(--spinner-color, #00ff89)";
+  const balls: React.ReactNode[] = [];
   const offset = ballSize / 2;
 
-  return (
-    <div
-      style={{
-        position: "relative",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: `${spinnerSize}px`,
-        height: `${spinnerSize}px`,
-      }}
-    >
-      {Array.from({ length: countBalls }, (_, index) => {
-        const y = Math.sin(angle * index * (Math.PI / 180)) * radius - offset;
-        const x = Math.cos(angle * index * (Math.PI / 180)) * radius - offset;
+  for (let i = 0; i < countBalls; i++) {
+    const y = Math.sin(angle * i * (Math.PI / 180)) * radius - offset;
+    const x = Math.cos(angle * i * (Math.PI / 180)) * radius - offset;
+    balls.push(
+      <Ball
+        color={color}
+        ballSize={ballSize}
+        size={spinnerSize}
+        x={y}
+        y={x}
+        key={i.toString()}
+        index={i}
+      />,
+    );
+  }
 
-        return (
-          <div
-            key={index}
-            style={{
-              position: "absolute",
-              top: `${spinnerSize / 2}px`,
-              left: `${spinnerSize / 2}px`,
-              width: `${ballSize}px`,
-              height: `${ballSize}px`,
-              borderRadius: "50%",
-              backgroundColor: "var(--spinner-color, currentColor)",
-              transform: `translateX(${y}px) translateY(${x}px) scale(0)`,
-              animation: "spinner-flapper 0.8s linear infinite",
-              animationDelay: `${index * 0.1}s`,
-              ["--spinner-x" as string]: `${y}px`,
-              ["--spinner-y" as string]: `${x}px`,
-            } as CSSProperties}
-          />
-        );
-      })}
-    </div>
-  );
+  return <Wrapper size={spinnerSize}>{balls}</Wrapper>;
 }

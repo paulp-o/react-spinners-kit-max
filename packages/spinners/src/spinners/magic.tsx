@@ -1,40 +1,54 @@
+import styled, { keyframes } from "styled-components";
 import type { InternalRenderProps } from "../types";
 
-export function renderMagic({ size }: InternalRenderProps): React.ReactNode {
-  const spinnerSize = size ?? 32;
-  const countBalls = size === undefined ? 6 : Math.max(1, Math.floor(size / 12));
+const rotate = () => keyframes`
+  100% {
+    transform: translateX(-50%) translateY(-50%) rotate(360deg);
+  }
+`;
 
-  return (
-    <div
-      style={{
-        position: "relative",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: `${spinnerSize}px`,
-        height: `${spinnerSize}px`,
-        overflow: "hidden",
-      }}
-    >
-      {Array.from({ length: countBalls }, (_, index) => (
-        <div
-          key={index}
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translateX(-50%) translateY(-50%) rotate(0deg)",
-            width: `${index * (spinnerSize / countBalls)}px`,
-            height: `${index * (spinnerSize / countBalls)}px`,
-            borderRadius: "50%",
-            backgroundColor: "transparent",
-            border: "2px solid transparent",
-            borderTopColor: "var(--spinner-color, currentColor)",
-            animation: "spinner-magic 2s cubic-bezier(0.68, -0.75, 0.265, 1.75) infinite forwards",
-            animationDelay: `${index * 0.05}s`,
-          }}
-        />
-      ))}
-    </div>
-  );
+const Wrapper = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: ${(props: any) => `${props.size}px`};
+  height: ${(props: any) => `${props.size}px`};
+  overflow: hidden;
+`;
+
+const Ball = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%) rotate(0deg);
+  width: ${(props: any) => `${props.index * (props.size / props.countBalls)}px`};
+  height: ${(props: any) => `${props.index * (props.size / props.countBalls)}px`};
+  border-radius: 50%;
+  background-color: transparent;
+  border: 2px solid transparent;
+  border-top-color: ${(props: any) => props.color};
+  animation: ${rotate} 2s cubic-bezier(0.68, -0.75, 0.265, 1.75) infinite forwards;
+  animation-delay: ${(props: any) => props.index * 0.05}s;
+`;
+
+export function renderMagic({ size }: InternalRenderProps): React.ReactNode {
+  const spinnerSize = size ?? 70;
+  const countBalls = spinnerSize / 12;
+  const color = "var(--spinner-color, #fff)";
+  const balls: React.ReactNode[] = [];
+
+  for (let i = 0; i < countBalls; i++) {
+    balls.push(
+      <Ball
+        color={color}
+        countBalls={countBalls}
+        size={spinnerSize}
+        key={i.toString()}
+        index={i}
+      />,
+    );
+  }
+
+  return <Wrapper size={spinnerSize}>{balls}</Wrapper>;
 }

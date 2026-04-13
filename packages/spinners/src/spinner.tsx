@@ -42,10 +42,10 @@ import type { InternalRenderProps, SpinnerProps, SpinnerVariant } from "./types"
 const spinnerVariants = cva("inline-flex items-center justify-center", {
   variants: {
     size: {
-      sm: "w-4 h-4",
-      md: "w-8 h-8",
-      lg: "w-12 h-12",
-      xl: "w-16 h-16",
+      sm: "",
+      md: "",
+      lg: "",
+      xl: "",
     },
   },
   defaultVariants: {
@@ -105,21 +105,18 @@ export function Spinner({
     return null;
   }
 
-  const sizeValue = typeof size === "number" ? size : undefined;
-  const sizeVariant = typeof size === "string" ? size : undefined;
+  const sizeMap: Record<string, number> = { sm: 20, md: 40, lg: 60, xl: 80 };
+  const resolvedSize = typeof size === "number" ? size : sizeMap[size] ?? 40;
 
   return (
     <div
       role="status"
       aria-label={ariaLabel}
-      className={cn(spinnerVariants({ size: sizeVariant }), className)}
-      style={{
-        ...(sizeValue ? { width: sizeValue, height: sizeValue, "--spinner-size": `${sizeValue}px` } : {}),
-        ...style,
-      } as CSSProperties}
+      className={cn("inline-flex items-center justify-center", className)}
+      style={style}
       {...props}
     >
-      {renderers[variant]({ size: sizeValue })}
+      {renderers[variant]({ size: resolvedSize })}
     </div>
   );
 }
