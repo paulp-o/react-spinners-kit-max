@@ -30,9 +30,9 @@ export function CodeBlock({ tabs, defaultTab }: CodeBlockProps) {
   if (!currentTab) return null;
 
   return (
-    <div className="group relative rounded-xl border border-zinc-800 bg-zinc-950 p-4">
-      <div className="mb-3 flex items-center justify-between">
-        <div className="inline-flex rounded-md border border-zinc-800 bg-black p-1">
+    <div className="relative rounded-xl border border-zinc-800 bg-zinc-950 p-4">
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <div className="inline-flex flex-wrap rounded-md border border-zinc-800 bg-black p-1">
           {tabs.map((tab) => {
             const isActive = tab.id === currentTab.id;
             return (
@@ -40,7 +40,7 @@ export function CodeBlock({ tabs, defaultTab }: CodeBlockProps) {
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id)}
-                className={`rounded px-2.5 py-1 text-[11px] font-medium transition ${
+                className={`rounded px-2.5 py-1 text-[11px] font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 ${
                   isActive
                     ? "bg-zinc-100 text-black"
                     : "text-zinc-400 hover:text-zinc-200"
@@ -55,7 +55,7 @@ export function CodeBlock({ tabs, defaultTab }: CodeBlockProps) {
         <button
           type="button"
           onClick={handleCopy}
-          className="rounded border border-zinc-800 bg-black px-2 py-1 text-[11px] text-zinc-400 opacity-0 transition group-hover:opacity-100 hover:text-zinc-100"
+          className="rounded border border-zinc-800 bg-black px-2 py-1 text-[11px] text-zinc-300 transition hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
         >
           {copied ? "Copied!" : "Copy"}
         </button>

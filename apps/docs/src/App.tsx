@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Spinner, type SpinnerVariant } from "react-spinners-kit-max";
 import { CodeBlock } from "./components/CodeBlock";
 import { Gallery } from "./components/Gallery";
@@ -8,12 +8,138 @@ import { GridBackground } from "./components/effects/GridBackground";
 import { MeteorLines } from "./components/effects/MeteorLines";
 import { TextGradient } from "./components/effects/TextGradient";
 
+const variants: SpinnerVariant[] = [
+  "ball",
+  "grid",
+  "swap",
+  "bars",
+  "wave",
+  "push",
+  "firework",
+  "stage",
+  "heart",
+  "guard",
+  "circle",
+  "spiral",
+  "pulse",
+  "sequence",
+  "domino",
+  "impulse",
+  "cube",
+  "fill",
+  "sphere",
+  "flag",
+  "clap",
+  "rotate",
+  "swish",
+  "goo",
+  "comb",
+  "pong",
+  "rainbow",
+  "ring",
+  "hoop",
+  "flapper",
+  "magic",
+  "jellyfish",
+  "trace",
+  "classic",
+  "whisper",
+  "metro",
+];
+
+const twoColorSet = new Set<SpinnerVariant>([
+  "guard",
+  "spiral",
+  "sequence",
+  "impulse",
+  "cube",
+  "swish",
+  "trace",
+  "whisper",
+  "clap",
+]);
+
 const installCommand =
   "npx shadcn add https://paulp-o.github.io/react-spinners-kit-max/r/registry.json";
 
+type GalleryFilter = "all" | "one" | "two";
+type PresetSize = "sm" | "md" | "lg" | "xl";
+type PreviewSurface = "dark" | "light" | "card";
+
 function App() {
   const [selectedVariant, setSelectedVariant] = useState<SpinnerVariant>("guard");
+  const [highlightedVariant, setHighlightedVariant] = useState<SpinnerVariant>("guard");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filter, setFilter] = useState<GalleryFilter>("all");
   const [copiedInstall, setCopiedInstall] = useState(false);
+
+  const [surface, setSurface] = useState<PreviewSurface>("dark");
+  const [presetSize, setPresetSize] = useState<PresetSize>("lg");
+  const [customSize, setCustomSize] = useState(72);
+  const [useCustomSize, setUseCustomSize] = useState(false);
+  const [primaryColor, setPrimaryColor] = useState("#00ff89");
+  const [secondaryColor, setSecondaryColor] = useState("#4b4c56");
+  const [speed, setSpeed] = useState<0.5 | 1 | 2>(1);
+
+  const filteredVariants = useMemo(() => {
+    const keyword = searchQuery.trim().toLowerCase();
+    return variants.filter((variant) => {
+      const matchesKeyword = keyword.length === 0 || variant.includes(keyword);
+      const matchesFilter =
+        filter === "all"
+          ? true
+          : filter === "two"
+            ? twoColorSet.has(variant)
+            : !twoColorSet.has(variant);
+      return matchesKeyword && matchesFilter;
+    });
+  }, [searchQuery, filter]);
+
+
+  useEffect(() => {
+    if (!filteredVariants.includes(selectedVariant) && filteredVariants[0]) {
+      setSelectedVariant(filteredVariants[0]);
+      setHighlightedVariant(filteredVariants[0]);
+    }
+  }, [filteredVariants, selectedVariant]);
+
+  useEffect(() => {
+    if (!filteredVariants.includes(highlightedVariant) && filteredVariants[0]) {
+      setHighlightedVariant(filteredVariants[0]);
+    }
+  }, [filteredVariants, highlightedVariant]);
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      const target = event.target as HTMLElement | null;
+      const tag = target?.tagName?.toLowerCase();
+      const editable = tag === "input" || tag === "textarea" || tag === "select" || target?.isContentEditable;
+
+      if (event.key === "/" && !editable) {
+        event.preventDefault();
+        const search = document.getElementById("gallery-search") as HTMLInputElement | null;
+        search?.focus();
+        return;
+      }
+
+      if (editable || filteredVariants.length === 0) return;
+
+      const currentIndex = Math.max(0, filteredVariants.indexOf(highlightedVariant));
+      if (["ArrowRight", "ArrowDown"].includes(event.key)) {
+        event.preventDefault();
+        setHighlightedVariant(filteredVariants[(currentIndex + 1) % filteredVariants.length]);
+      } else if (["ArrowLeft", "ArrowUp"].includes(event.key)) {
+        event.preventDefault();
+        setHighlightedVariant(filteredVariants[(currentIndex - 1 + filteredVariants.length) % filteredVariants.length]);
+      } else if (event.key === "Enter") {
+        event.preventDefault();
+        setSelectedVariant(highlightedVariant);
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [filteredVariants, highlightedVariant]);
 
   async function copyInstall() {
     await navigator.clipboard.writeText(installCommand);
@@ -38,100 +164,93 @@ function App() {
         className="pointer-events-none fixed inset-0 z-[2]"
         style={{ background: "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)" }}
       />
+
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
-        <header className="relative flex min-h-[78vh] flex-col items-center justify-center gap-8 overflow-hidden border-b border-zinc-900 py-24 text-center">
-          <MeteorLines count={10} className="opacity-25" />
-          <div aria-hidden className="pointer-events-none absolute inset-0">
-            <div
-              className="animate-aurora-flow absolute left-[-12%] top-[12%] h-28 w-[74%] rounded-full blur-3xl"
-              style={{
-                background: "linear-gradient(90deg, transparent 0%, rgba(124,58,237,0.16) 30%, rgba(6,182,212,0.14) 64%, transparent 100%)",
-              }}
-            />
-            <div
-              className="animate-aurora-flow absolute right-[-14%] top-[28%] h-24 w-[68%] rounded-full blur-3xl"
-              style={{
-                animationDelay: "-9s",
-                background: "linear-gradient(90deg, transparent 0%, rgba(6,182,212,0.12) 28%, rgba(16,185,129,0.13) 58%, transparent 100%)",
-              }}
-            />
-            <div
-              className="animate-aurora-flow absolute left-[8%] top-[44%] h-20 w-[66%] rounded-full blur-3xl"
-              style={{
-                animationDelay: "-18s",
-                background: "linear-gradient(90deg, transparent 0%, rgba(46,16,101,0.15) 35%, rgba(8,51,68,0.11) 62%, transparent 100%)",
-              }}
-            />
+        <header className="relative flex min-h-[40vh] flex-col items-center justify-center gap-5 overflow-hidden border-b border-zinc-900 py-12 text-center">
+          <MeteorLines count={10} className="opacity-20" />
+          <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl">
+            <TextGradient className="text-zinc-50">React Spinners Kit Max</TextGradient>
+          </h1>
+          <p className="mx-auto max-w-2xl text-sm text-zinc-400 sm:text-base">
+            36 animated spinner components for React. Modernized from react-spinners-kit.
+          </p>
+
+          <div className="w-full max-w-4xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            <div className="flex w-max animate-[marquee_30s_linear_infinite] gap-4 [--spinner-color:#ffffff] [--spinner-secondary-color:#71717a]">
+              {[...variants, ...variants].map((variant, i) => (
+                <div key={`${variant}-${i}`} className="flex flex-col items-center gap-2 rounded-lg border border-zinc-900 bg-zinc-950/80 px-3 py-3">
+                  <Spinner variant={variant} size={44} />
+                  <span className="font-mono text-[10px] text-zinc-500">{variant}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(39,39,42,0.28),transparent_55%)]" />
-          <div className="relative flex items-center gap-6 [--spinner-color:#ffffff] [--spinner-secondary-color:#71717a]">
-            <Spinner variant="guard" size={112} />
-            <Spinner variant="cube" size={96} />
-            <Spinner variant="spiral" size={84} />
-          </div>
-          <div className="relative space-y-4">
-            <h1 className="text-5xl font-extrabold tracking-tight sm:text-7xl">
-              <TextGradient className="text-zinc-50">React Spinners Kit Max</TextGradient>
-            </h1>
-            <p className="mx-auto max-w-2xl text-base text-zinc-400 sm:text-lg">
-              36 beautifully animated, shadcn-compatible spinners for modern React apps. Drop-in ready.
-            </p>
-          </div>
-          <div className="relative flex flex-wrap justify-center gap-3">
-            <a
-              href="#gallery"
-              className="rounded-md bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-zinc-200"
-            >
-              Browse Gallery
-            </a>
-            <a
-              href="https://github.com/paulp-o/react-spinners-kit-max"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-md border border-zinc-800 px-4 py-2 text-sm font-medium text-zinc-100 transition hover:border-zinc-700"
-            >
-              GitHub
-            </a>
-          </div>
-          <div className="relative flex w-full max-w-3xl items-center justify-between gap-3 rounded-xl border border-zinc-900 bg-zinc-950 px-4 py-3">
+
+          <div className="flex w-full max-w-3xl items-center justify-between gap-3 rounded-xl border border-zinc-900 bg-zinc-950 px-4 py-3">
             <code className="overflow-x-auto text-left text-xs text-zinc-300 sm:text-sm">{installCommand}</code>
             <button
               type="button"
               onClick={copyInstall}
-              className="shrink-0 rounded border border-zinc-800 bg-black px-2 py-1 text-xs text-zinc-400 transition hover:text-zinc-100"
+              className="shrink-0 rounded border border-zinc-800 bg-black px-2 py-1 text-xs text-zinc-400 transition hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
             >
               {copiedInstall ? "Copied!" : "Copy"}
             </button>
           </div>
         </header>
 
-        <main className="space-y-24 py-16">
-          <section id="gallery" className="space-y-5">
-            <div className="space-y-2">
-              <h2 className="text-2xl font-semibold tracking-tight text-zinc-50">Gallery</h2>
-              <p className="text-sm text-zinc-500">
-                Click any spinner to pin it into the live playground.
-              </p>
+        <main className="space-y-12 py-8">
+          <section id="studio" className="space-y-4">
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold tracking-tight text-zinc-50">Explore</h2>
+              <p className="text-sm text-zinc-500">Use Arrow keys to move, Enter to select, and / to focus search.</p>
             </div>
-            <Gallery selectedVariant={selectedVariant} onSelectVariant={setSelectedVariant} />
-          </section>
 
-          <div
-            aria-hidden
-            className="mx-auto h-px w-full max-w-5xl bg-[linear-gradient(90deg,transparent,rgba(124,58,237,0.25),transparent)]"
-          />
+            <div className="grid gap-4 lg:grid-cols-[1fr_400px]">
+              <div className="min-w-0 rounded-2xl border border-zinc-900 bg-zinc-950 p-4 lg:max-h-[100vh] lg:overflow-y-auto">
+                <Gallery
+                  variants={variants}
+                  filteredVariants={filteredVariants}
+                  twoColorSet={twoColorSet}
+                  selectedVariant={selectedVariant}
+                  highlightedVariant={highlightedVariant}
+                  searchQuery={searchQuery}
+                  filter={filter}
+                  onSearchQueryChange={setSearchQuery}
+                  onFilterChange={setFilter}
+                  onSelectVariant={(variant) => {
+                    setSelectedVariant(variant);
+                    setHighlightedVariant(variant);
+                  }}
+                  onHighlightVariant={setHighlightedVariant}
+                />
+              </div>
 
-          <section id="playground" className="space-y-5">
-            <div className="space-y-2">
-              <h2 className="text-2xl font-semibold tracking-tight text-zinc-50">Playground</h2>
-              <p className="text-sm text-zinc-500">
-                Tune size and colors, then copy production-ready code.
-              </p>
+              <div className="min-w-0 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto">
+                <Playground
+                  variants={variants}
+                  twoColorSet={twoColorSet}
+                  selectedVariant={selectedVariant}
+                  onSelectVariant={(variant) => {
+                    setSelectedVariant(variant);
+                    setHighlightedVariant(variant);
+                  }}
+                  surface={surface}
+                  onSurfaceChange={setSurface}
+                  presetSize={presetSize}
+                  onPresetSizeChange={setPresetSize}
+                  customSize={customSize}
+                  onCustomSizeChange={setCustomSize}
+                  useCustomSize={useCustomSize}
+                  onUseCustomSizeChange={setUseCustomSize}
+                  primaryColor={primaryColor}
+                  onPrimaryColorChange={setPrimaryColor}
+                  secondaryColor={secondaryColor}
+                  onSecondaryColorChange={setSecondaryColor}
+                  speed={speed}
+                  onSpeedChange={setSpeed}
+                />
+              </div>
             </div>
-            <Playground
-              selectedVariant={selectedVariant}
-              onSelectVariant={setSelectedVariant}
-            />
           </section>
 
           <div
@@ -141,43 +260,22 @@ function App() {
 
           <section id="install" className="mx-auto max-w-4xl space-y-5">
             <div className="space-y-2">
-              <h2 className="text-2xl font-semibold tracking-tight text-zinc-50">Install & Usage</h2>
-              <p className="text-sm text-zinc-500">Pick your preferred setup and copy-paste.</p>
+              <h2 className="text-2xl font-semibold tracking-tight text-zinc-50">Install</h2>
+              <p className="text-sm text-zinc-500">Choose package manager and copy instantly.</p>
             </div>
             <CodeBlock
               tabs={[
-                {
-                  id: "shadcn",
-                  label: "shadcn/ui (Recommended)",
-                  code: [
-                    "npx shadcn add https://paulp-o.github.io/react-spinners-kit-max/r/registry.json",
-                    "",
-                    'import { Spinner } from "@/components/ui/spinner"',
-                    "",
-                    '<Spinner variant=\"guard\" size=\"lg\" />',
-                  ].join("\n"),
-                },
-                {
-                  id: "npm",
-                  label: "npm package",
-                  code: [
-                    "npm install react-spinners-kit-max",
-                    "",
-                    'import { Spinner } from "react-spinners-kit-max"',
-                    'import "react-spinners-kit-max/style.css"',
-                    "",
-                    '<Spinner variant=\"guard\" size=\"lg\" />',
-                  ].join("\n"),
-                },
+                { id: "pnpm", label: "pnpm", code: "pnpm add react-spinners-kit-max" },
+                { id: "npm", label: "npm", code: "npm install react-spinners-kit-max" },
+                { id: "yarn", label: "yarn", code: "yarn add react-spinners-kit-max" },
+                { id: "bun", label: "bun", code: "bun add react-spinners-kit-max" },
               ]}
             />
           </section>
         </main>
 
         <footer className="flex flex-col gap-3 border-t border-zinc-900 py-12 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            Based on the original react-spinners-kit by Dmitry Morozoff. Remixed for shadcn.
-          </p>
+          <p>Based on the original react-spinners-kit by Dmitry Morozoff. Remixed for shadcn.</p>
           <div className="flex items-center gap-4">
             <a className="transition hover:text-zinc-300" href="https://github.com/paulp-o/react-spinners-kit-max">
               GitHub
@@ -185,10 +283,7 @@ function App() {
             <a className="transition hover:text-zinc-300" href="https://www.npmjs.com/package/react-spinners-kit-max">
               npm
             </a>
-            <a
-              className="transition hover:text-zinc-300"
-              href="https://github.com/dmitrymorozoff/react-spinners-kit"
-            >
+            <a className="transition hover:text-zinc-300" href="https://github.com/dmitrymorozoff/react-spinners-kit">
               Original
             </a>
           </div>
