@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Spinner, type SpinnerVariant } from "react-spinners-kit-max";
 import { CodeBlock } from "./components/CodeBlock";
 import { Gallery } from "./components/Gallery";
@@ -47,6 +47,21 @@ const variants: SpinnerVariant[] = [
   "metro",
 ];
 
+const marqueeVariants: SpinnerVariant[] = [
+  "ball",
+  "circle",
+  "cube",
+  "heart",
+  "guard",
+  "spiral",
+  "wave",
+  "firework",
+  "rainbow",
+  "magic",
+  "metro",
+  "classic",
+];
+
 const twoColorSet = new Set<SpinnerVariant>([
   "guard",
   "spiral",
@@ -79,7 +94,7 @@ function App() {
   const [useCustomSize, setUseCustomSize] = useState(false);
   const [primaryColor, setPrimaryColor] = useState("#00ff89");
   const [secondaryColor, setSecondaryColor] = useState("#4b4c56");
-  const [speed, setSpeed] = useState<0.5 | 1 | 2>(1);
+  const [paused, setPaused] = useState(false);
 
   const filteredVariants = useMemo(() => {
     const keyword = searchQuery.trim().toLowerCase();
@@ -141,16 +156,25 @@ function App() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [filteredVariants, highlightedVariant]);
 
-  async function copyInstall() {
+  const copyInstall = useCallback(async () => {
     await navigator.clipboard.writeText(installCommand);
     setCopiedInstall(true);
     window.setTimeout(() => setCopiedInstall(false), 1200);
-  }
+  }, []);
+
+  const handleSelectVariant = useCallback((variant: SpinnerVariant) => {
+    setSelectedVariant(variant);
+    setHighlightedVariant(variant);
+  }, []);
+
+  const handleHighlightVariant = useCallback((variant: SpinnerVariant) => {
+    setHighlightedVariant(variant);
+  }, []);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-black text-zinc-50">
-      <GradientBlobs className="opacity-90" />
-      <GridBackground className="opacity-40" />
+      <GradientBlobs className="opacity-70" />
+      <GridBackground className="opacity-25" />
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 z-[1] opacity-[0.03] mix-blend-soft-light"
@@ -167,7 +191,7 @@ function App() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <header className="relative flex min-h-[40vh] flex-col items-center justify-center gap-5 overflow-hidden border-b border-zinc-900 py-12 text-center">
-          <MeteorLines count={10} className="opacity-20" />
+          <MeteorLines count={5} className="opacity-12" />
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl">
             <TextGradient className="text-zinc-50">React Spinners Kit Max</TextGradient>
           </h1>
@@ -175,9 +199,9 @@ function App() {
             36 animated spinner components for React. Modernized from react-spinners-kit.
           </p>
 
-          <div className="w-full max-w-4xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-            <div className="flex w-max animate-[marquee_30s_linear_infinite] gap-4 [--spinner-color:#ffffff] [--spinner-secondary-color:#71717a]">
-              {[...variants, ...variants].map((variant, i) => (
+          <div className="gpu-layer w-full max-w-4xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            <div className="gpu-layer flex w-max animate-[marquee_34s_linear_infinite] gap-4 [--spinner-color:#ffffff] [--spinner-secondary-color:#71717a]">
+              {[...marqueeVariants, ...marqueeVariants].map((variant, i) => (
                 <div key={`${variant}-${i}`} className="flex flex-col items-center gap-2 rounded-lg border border-zinc-900 bg-zinc-950/80 px-3 py-3">
                   <Spinner variant={variant} size={44} />
                   <span className="font-mono text-[10px] text-zinc-500">{variant}</span>
@@ -199,7 +223,7 @@ function App() {
         </header>
 
         <main className="space-y-12 py-8">
-          <section id="studio" className="space-y-4">
+          <section id="studio" className="content-auto space-y-4">
             <div className="space-y-1">
               <h2 className="text-2xl font-semibold tracking-tight text-zinc-50">Explore</h2>
               <p className="text-sm text-zinc-500">Use Arrow keys to move, Enter to select, and / to focus search.</p>
@@ -217,11 +241,8 @@ function App() {
                   filter={filter}
                   onSearchQueryChange={setSearchQuery}
                   onFilterChange={setFilter}
-                  onSelectVariant={(variant) => {
-                    setSelectedVariant(variant);
-                    setHighlightedVariant(variant);
-                  }}
-                  onHighlightVariant={setHighlightedVariant}
+                  onSelectVariant={handleSelectVariant}
+                  onHighlightVariant={handleHighlightVariant}
                 />
               </div>
 
@@ -230,10 +251,7 @@ function App() {
                   variants={variants}
                   twoColorSet={twoColorSet}
                   selectedVariant={selectedVariant}
-                  onSelectVariant={(variant) => {
-                    setSelectedVariant(variant);
-                    setHighlightedVariant(variant);
-                  }}
+                  onSelectVariant={handleSelectVariant}
                   surface={surface}
                   onSurfaceChange={setSurface}
                   presetSize={presetSize}
@@ -246,8 +264,8 @@ function App() {
                   onPrimaryColorChange={setPrimaryColor}
                   secondaryColor={secondaryColor}
                   onSecondaryColorChange={setSecondaryColor}
-                  speed={speed}
-                  onSpeedChange={setSpeed}
+                  paused={paused}
+                  onPausedChange={setPaused}
                 />
               </div>
             </div>
@@ -258,7 +276,7 @@ function App() {
             className="mx-auto h-px w-full max-w-5xl bg-[linear-gradient(90deg,transparent,rgba(124,58,237,0.25),transparent)]"
           />
 
-          <section id="install" className="mx-auto max-w-4xl space-y-5">
+          <section id="install" className="content-auto mx-auto max-w-4xl space-y-5">
             <div className="space-y-2">
               <h2 className="text-2xl font-semibold tracking-tight text-zinc-50">Install</h2>
               <p className="text-sm text-zinc-500">Choose package manager and copy instantly.</p>

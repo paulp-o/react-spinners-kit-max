@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { Spinner, type SpinnerVariant } from "react-spinners-kit-max";
 import { CodeBlock } from "./CodeBlock";
 
@@ -22,8 +22,8 @@ interface PlaygroundProps {
   onPrimaryColorChange: (value: string) => void;
   secondaryColor: string;
   onSecondaryColorChange: (value: string) => void;
-  speed: 0.5 | 1 | 2;
-  onSpeedChange: (value: 0.5 | 1 | 2) => void;
+  paused: boolean;
+  onPausedChange: (value: boolean) => void;
 }
 
 const colorPresets = [
@@ -37,7 +37,7 @@ const colorPresets = [
   { id: "amber", label: "Amber", primary: "#f59e0b", secondary: "#b45309" },
 ] as const;
 
-export function Playground({
+export const Playground = memo(function Playground({
   variants,
   twoColorSet,
   selectedVariant,
@@ -54,8 +54,8 @@ export function Playground({
   onPrimaryColorChange,
   secondaryColor,
   onSecondaryColorChange,
-  speed,
-  onSpeedChange,
+  paused,
+  onPausedChange,
 }: PlaygroundProps) {
   const supportsSecondary = twoColorSet.has(selectedVariant);
   const size = useCustomSize ? Math.max(12, customSize) : presetSize;
@@ -65,28 +65,26 @@ export function Playground({
       ({
         "--spinner-color": primaryColor,
         "--spinner-secondary-color": supportsSecondary ? secondaryColor : primaryColor,
-        "--spinner-duration-scale": 1 / speed,
       }) as React.CSSProperties,
-    [primaryColor, secondaryColor, supportsSecondary, speed],
+    [primaryColor, secondaryColor, supportsSecondary],
   );
 
   const usageCode = useMemo(() => {
     const sizeValue = useCustomSize ? customSize : `"${presetSize}"`;
-    const speedLine = `const style: CSSProperties = { "--spinner-color": "${primaryColor}", "--spinner-secondary-color": "${
-      supportsSecondary ? secondaryColor : primaryColor
-    }", "--spinner-duration-scale": ${1 / speed} };`;
 
     return [
       'import { Spinner } from "react-spinners-kit-max";',
       'import type { CSSProperties } from "react";',
       "",
-      speedLine,
+      `const style: CSSProperties = { \"--spinner-color\": \"${primaryColor}\", \"--spinner-secondary-color\": \"${
+        supportsSecondary ? secondaryColor : primaryColor
+      }\" };`,
       "",
       "export function Example() {",
       `  return <Spinner variant=\"${selectedVariant}\" size={${sizeValue}} style={style} />;`,
       "}",
     ].join("\n");
-  }, [selectedVariant, presetSize, useCustomSize, customSize, primaryColor, secondaryColor, supportsSecondary, speed]);
+  }, [selectedVariant, presetSize, useCustomSize, customSize, primaryColor, secondaryColor, supportsSecondary]);
 
   const previewSurfaceClass =
     surface === "dark"
@@ -141,8 +139,12 @@ export function Playground({
       </div>
 
       <div
-        className={`flex min-h-[220px] items-center justify-center overflow-hidden rounded-xl border ${previewSurfaceClass} [&_*]:[animation-duration:calc(var(--spinner-duration-scale,1)*1s)]`}
+        id="spinner-preview-stage"
+        className={`relative flex min-h-[220px] items-center justify-center overflow-hidden rounded-xl border ${previewSurfaceClass} ${
+          paused ? "spinner-preview-paused" : ""
+        }`}
       >
+        {paused ? <style>{"#spinner-preview-stage.spinner-preview-paused *, #spinner-preview-stage.spinner-preview-paused *::before, #spinner-preview-stage.spinner-preview-paused *::after { animation-play-state: paused !important; }"}</style> : null}
         <div style={style}>
           <Spinner variant={selectedVariant} size={size} />
         </div>
@@ -245,26 +247,17 @@ export function Playground({
       </div>
 
       <div className="space-y-2">
-        <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">Speed</p>
-        <div className="grid grid-cols-3 gap-2">
-          {([0.5, 1, 2] as const).map((item) => (
-            <button
-              key={item}
-              type="button"
-              onClick={() => onSpeedChange(item)}
-              className={`rounded-md border px-2 py-1.5 text-xs transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 ${
-                speed === item
-                  ? "border-zinc-200 bg-zinc-100 text-black"
-                  : "border-zinc-800 bg-black text-zinc-400 hover:text-zinc-200"
-              }`}
-            >
-              {item}x
-            </button>
-          ))}
-        </div>
+        <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">Animation</p>
+        <button
+          type="button"
+          onClick={() => onPausedChange(!paused)}
+          className="rounded-md border border-zinc-800 bg-black px-3 py-1.5 text-xs text-zinc-300 transition hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
+        >
+          {paused ? "Play" : "Pause"}
+        </button>
       </div>
 
       <CodeBlock tabs={[{ id: "usage", label: "Usage", code: usageCode }]} />
     </div>
   );
-}
+});

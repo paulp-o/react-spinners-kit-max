@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { Spinner, type SpinnerVariant } from "react-spinners-kit-max";
 import { BorderBeam } from "./effects/BorderBeam";
-import { Spotlight } from "./effects/Spotlight";
 
 type GalleryFilter = "all" | "one" | "two";
 
@@ -19,7 +18,96 @@ interface GalleryProps {
   onHighlightVariant: (variant: SpinnerVariant) => void;
 }
 
-export function Gallery({
+interface SpinnerCardProps {
+  variant: SpinnerVariant;
+  isSelected: boolean;
+  isHighlighted: boolean;
+  isTwoColor: boolean;
+  copied: boolean;
+  onSelectVariant: (variant: SpinnerVariant) => void;
+  onHighlightVariant: (variant: SpinnerVariant) => void;
+  onCopySnippet: (variant: SpinnerVariant) => void;
+}
+
+const SpinnerCard = memo(function SpinnerCard({
+  variant,
+  isSelected,
+  isHighlighted,
+  isTwoColor,
+  copied,
+  onSelectVariant,
+  onHighlightVariant,
+  onCopySnippet,
+}: SpinnerCardProps) {
+  const cardRef = useRef<HTMLButtonElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const node = cardRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { root: null, rootMargin: "180px 0px", threshold: 0.05 },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  const handleCopy = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      onCopySnippet(variant);
+    },
+    [onCopySnippet, variant],
+  );
+
+  return (
+    <button
+      ref={cardRef}
+      type="button"
+      onClick={() => onSelectVariant(variant)}
+      onFocus={() => onHighlightVariant(variant)}
+      className={`spinner-card group relative overflow-hidden rounded-lg border bg-zinc-950 p-2 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 ${
+        isSelected
+          ? "border-zinc-500"
+          : isHighlighted
+            ? "border-zinc-700"
+            : "border-zinc-900 hover:border-zinc-700 hover:bg-zinc-900"
+      }`}
+    >
+      <BorderBeam />
+
+      <div className="absolute right-1 top-1 z-20 opacity-0 transition group-hover:opacity-100">
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="rounded border border-zinc-700 bg-black/80 px-1.5 py-0.5 text-[10px] text-zinc-300 backdrop-blur hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
+        >
+          {copied ? "✓" : "Copy"}
+        </button>
+      </div>
+
+      <div className="aspect-square w-full [--spinner-color:#71717a] [--spinner-secondary-color:#a1a1aa] transition group-hover:[--spinner-color:#fafafa]">
+        <div className="flex h-full items-center justify-center">
+          {isVisible ? (
+            <div className="gpu-layer">
+              <Spinner variant={variant} size="md" />
+            </div>
+          ) : (
+            <div className="h-10 w-10 rounded-full border border-zinc-800 bg-zinc-900/60" />
+          )}
+        </div>
+      </div>
+      <p className="mt-1 truncate text-center font-mono text-[11px] text-zinc-500 transition group-hover:text-zinc-300">
+        {variant}{isTwoColor ? " • 2c" : ""}
+      </p>
+    </button>
+  );
+});
+
+export const Gallery = memo(function Gallery({
   variants,
   filteredVariants,
   twoColorSet,
@@ -32,14 +120,13 @@ export function Gallery({
   onSelectVariant,
   onHighlightVariant,
 }: GalleryProps) {
-  const [hoverState, setHoverState] = useState({ variant: "" as SpinnerVariant | "", x: 0, y: 0, active: false });
   const [copiedVariant, setCopiedVariant] = useState<SpinnerVariant | null>(null);
 
-  async function copySnippet(variant: SpinnerVariant) {
+  const copySnippet = useCallback(async (variant: SpinnerVariant) => {
     await navigator.clipboard.writeText(`<Spinner variant=\"${variant}\" />`);
     setCopiedVariant(variant);
     window.setTimeout(() => setCopiedVariant(null), 900);
-  }
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -81,63 +168,20 @@ export function Gallery({
       </div>
 
       <div className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-3">
-        {filteredVariants.map((variant) => {
-          const isSelected = selectedVariant === variant;
-          const isHighlighted = highlightedVariant === variant;
-          const copied = copiedVariant === variant;
-
-          return (
-            <button
-              key={variant}
-              type="button"
-              onClick={() => onSelectVariant(variant)}
-              onFocus={() => onHighlightVariant(variant)}
-              onMouseMove={(event) => {
-                const rect = event.currentTarget.getBoundingClientRect();
-                setHoverState({ variant, x: event.clientX - rect.left, y: event.clientY - rect.top, active: true });
-              }}
-              onMouseLeave={() => setHoverState((current) => ({ ...current, active: false }))}
-              className={`group relative overflow-hidden rounded-lg border bg-zinc-950 p-2 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 ${
-                isSelected
-                  ? "border-zinc-500"
-                  : isHighlighted
-                    ? "border-zinc-700"
-                    : "border-zinc-900 hover:border-zinc-700 hover:bg-zinc-900"
-              }`}
-            >
-              <Spotlight
-                x={hoverState.x}
-                y={hoverState.y}
-                active={hoverState.active && hoverState.variant === variant}
-                className="mix-blend-screen"
-              />
-              <BorderBeam />
-
-              <div className="absolute right-1 top-1 z-20 opacity-0 transition group-hover:opacity-100">
-                <button
-                  type="button"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    void copySnippet(variant);
-                  }}
-                  className="rounded border border-zinc-700 bg-black/80 px-1.5 py-0.5 text-[10px] text-zinc-300 backdrop-blur hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
-                >
-                  {copied ? "✓" : "Copy"}
-                </button>
-              </div>
-
-              <div className="aspect-square w-full [--spinner-color:#71717a] [--spinner-secondary-color:#a1a1aa] transition group-hover:[--spinner-color:#fafafa]">
-                <div className="flex h-full items-center justify-center">
-                  <Spinner variant={variant} size="md" />
-                </div>
-              </div>
-              <p className="mt-1 truncate text-center font-mono text-[11px] text-zinc-500 transition group-hover:text-zinc-300">
-                {variant}{twoColorSet.has(variant) ? " • 2c" : ""}
-              </p>
-            </button>
-          );
-        })}
+        {filteredVariants.map((variant) => (
+          <SpinnerCard
+            key={variant}
+            variant={variant}
+            isSelected={selectedVariant === variant}
+            isHighlighted={highlightedVariant === variant}
+            isTwoColor={twoColorSet.has(variant)}
+            copied={copiedVariant === variant}
+            onSelectVariant={onSelectVariant}
+            onHighlightVariant={onHighlightVariant}
+            onCopySnippet={copySnippet}
+          />
+        ))}
       </div>
     </div>
   );
-}
+});

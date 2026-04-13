@@ -32,6 +32,25 @@ pre {
   font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 900px;
+}
+
+.gpu-layer {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.spinner-card {
+  contain: layout style paint;
+}
+
+.style-contain {
+  contain: strict;
+}
+
 .text-gradient-animate {
   background: linear-gradient(90deg, #fafafa, #7c3aed, #06b6d4, #fafafa);
   background-size: 300% 100%;
@@ -89,7 +108,7 @@ pre {
   animation: float-blob 16s ease-in-out infinite;
 }
 .animate-meteor-line {
-  animation: meteor-line 4.2s linear infinite;
+  animation: meteor-line 5.4s linear infinite;
 }
 .border-beam-mask {
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -143,20 +162,20 @@ pre {
   0%,
   100% {
     transform: translate3d(-6%, 0, 0) skewX(-6deg);
-    opacity: 0.12;
+    opacity: 0.08;
   }
   50% {
     transform: translate3d(6%, -2%, 0) skewX(6deg);
-    opacity: 0.18;
+    opacity: 0.12;
   }
 }
 
 .animate-mesh-drift-a {
-  animation: mesh-drift-a 90s ease-in-out infinite;
+  animation: mesh-drift-a 140s ease-in-out infinite;
 }
 
 .animate-mesh-drift-b {
-  animation: mesh-drift-b 110s ease-in-out infinite;
+  animation: mesh-drift-b 170s ease-in-out infinite;
 }
 
 .animate-mesh-drift-c {

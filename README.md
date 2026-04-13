@@ -6,6 +6,10 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](#testing)
 
+<p align="center">
+  <img src="assets/preview.gif" alt="react-spinners-kit-max preview" width="800" />
+</p>
+
 ## Live Demo
 
 See all 36 spinners in action: [Live Playground](https://paulp-o.github.io/react-spinners-kit-max/)

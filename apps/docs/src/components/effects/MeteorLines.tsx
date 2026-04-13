@@ -5,7 +5,7 @@ interface MeteorLinesProps {
   className?: string;
 }
 
-export function MeteorLines({ count = 8, className = "" }: MeteorLinesProps) {
+export function MeteorLines({ count = 5, className = "" }: MeteorLinesProps) {
   const meteors = useMemo(
     () =>
       Array.from({ length: count }, (_, index) => ({
