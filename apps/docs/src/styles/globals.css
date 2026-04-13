@@ -103,3 +103,61 @@ pre {
   );
   animation: border-beam 2.4s linear infinite;
 }
+
+@keyframes mesh-drift-a {
+  0%,
+  100% {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, 2%, 0) scale(1.06);
+  }
+}
+
+@keyframes mesh-drift-b {
+  0%,
+  100% {
+    transform: translate3d(2%, 1%, 0) scale(1.02);
+  }
+  50% {
+    transform: translate3d(-3%, -2%, 0) scale(1.08);
+  }
+}
+
+@keyframes mesh-drift-c {
+  0%,
+  100% {
+    transform: translate3d(0%, 2%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(1%, -2%, 0) scale(1.05);
+  }
+}
+
+@keyframes aurora-flow {
+  0%,
+  100% {
+    transform: translate3d(-6%, 0, 0) skewX(-6deg);
+    opacity: 0.12;
+  }
+  50% {
+    transform: translate3d(6%, -2%, 0) skewX(6deg);
+    opacity: 0.18;
+  }
+}
+
+.animate-mesh-drift-a {
+  animation: mesh-drift-a 90s ease-in-out infinite;
+}
+
+.animate-mesh-drift-b {
+  animation: mesh-drift-b 110s ease-in-out infinite;
+}
+
+.animate-mesh-drift-c {
+  animation: mesh-drift-c 75s ease-in-out infinite;
+}
+
+.animate-aurora-flow {
+  animation: aurora-flow 42s ease-in-out infinite;
+}
