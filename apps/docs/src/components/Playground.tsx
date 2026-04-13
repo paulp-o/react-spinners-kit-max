@@ -98,17 +98,17 @@ export function Playground({ selectedVariant, onSelectVariant }: PlaygroundProps
   }, [selectedVariant, presetSize, useCustomSize, customSize, color, secondaryColor, supportsSecondary]);
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[1.2fr_1fr]">
-      <div className="rounded-2xl border border-zinc-900 bg-zinc-950 p-6">
+    <div className="grid gap-4 lg:grid-cols-[1.2fr_1fr] overflow-hidden">
+      <div className="min-w-0 rounded-2xl border border-zinc-900 bg-zinc-950 p-4 sm:p-6">
         <p className="mb-3 text-[11px] uppercase tracking-[0.18em] text-zinc-500">Preview</p>
-        <div className="flex min-h-[320px] items-center justify-center rounded-xl border border-zinc-900 bg-black">
+        <div className="flex min-h-[200px] sm:min-h-[320px] items-center justify-center rounded-xl border border-zinc-900 bg-black overflow-hidden">
           <div style={style}>
             <Spinner variant={selectedVariant} size={size} />
           </div>
         </div>
       </div>
 
-      <div className="space-y-4 rounded-2xl border border-zinc-900 bg-zinc-950 p-4">
+      <div className="min-w-0 space-y-4 rounded-2xl border border-zinc-900 bg-zinc-950 p-3 sm:p-4">
         <div className="space-y-2">
           <label htmlFor="variant" className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">
             Variant
@@ -117,7 +117,7 @@ export function Playground({ selectedVariant, onSelectVariant }: PlaygroundProps
             id="variant"
             value={selectedVariant}
             onChange={(event) => onSelectVariant(event.target.value as SpinnerVariant)}
-            className="w-full rounded-md border border-zinc-800 bg-black px-3 py-2 text-sm text-zinc-100 outline-none focus:border-zinc-600"
+            className="w-full min-w-0 rounded-md border border-zinc-800 bg-black px-3 py-2 text-sm text-zinc-100 outline-none focus:border-zinc-600"
           >
             {variants.map((variant) => (
               <option key={variant} value={variant}>
@@ -168,7 +168,7 @@ export function Playground({ selectedVariant, onSelectVariant }: PlaygroundProps
               setUseCustomSize(true);
               setCustomSize(Number(event.target.value));
             }}
-            className="w-full rounded-md border border-zinc-800 bg-black px-3 py-2 text-sm text-zinc-100 outline-none focus:border-zinc-600"
+            className="w-full min-w-0 rounded-md border border-zinc-800 bg-black px-3 py-2 text-sm text-zinc-100 outline-none focus:border-zinc-600"
           />
         </div>
 
