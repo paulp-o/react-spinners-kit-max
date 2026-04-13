@@ -18,7 +18,7 @@
     "dev": "vite",
     "test": "vitest run",
     "lint": "tsc --noEmit",
-    "registry:copy": "cp -r registry/ ../../apps/docs/public/r/"
+    "registry:copy": "mkdir -p ../../apps/docs/public/r && cp -r registry/ ../../apps/docs/public/r/"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
