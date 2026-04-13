@@ -1,0 +1,219 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "react-spinners-kit-max",
+  "homepage": "https://paulp-o.github.io/react-spinners-kit-max",
+  "items": [
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "36 animated spinner variants ported from react-spinners-kit with pixel-perfect CSS keyframe animations",
+      "dependencies": [
+        "class-variance-authority",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "components/ui/spinner.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinner.tsx"
+        },
+        {
+          "path": "components/ui/types.ts",
+          "type": "registry:file",
+          "target": "components/ui/types.ts"
+        },
+        {
+          "path": "components/ui/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "components/ui/lib/utils.ts"
+        },
+        {
+          "path": "components/ui/spinners/ball.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/ball.tsx"
+        },
+        {
+          "path": "components/ui/spinners/bars.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/bars.tsx"
+        },
+        {
+          "path": "components/ui/spinners/circle.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/circle.tsx"
+        },
+        {
+          "path": "components/ui/spinners/clap.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/clap.tsx"
+        },
+        {
+          "path": "components/ui/spinners/classic.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/classic.tsx"
+        },
+        {
+          "path": "components/ui/spinners/comb.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/comb.tsx"
+        },
+        {
+          "path": "components/ui/spinners/cube.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/cube.tsx"
+        },
+        {
+          "path": "components/ui/spinners/domino.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/domino.tsx"
+        },
+        {
+          "path": "components/ui/spinners/fill.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/fill.tsx"
+        },
+        {
+          "path": "components/ui/spinners/firework.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/firework.tsx"
+        },
+        {
+          "path": "components/ui/spinners/flag.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/flag.tsx"
+        },
+        {
+          "path": "components/ui/spinners/flapper.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/flapper.tsx"
+        },
+        {
+          "path": "components/ui/spinners/goo.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/goo.tsx"
+        },
+        {
+          "path": "components/ui/spinners/grid.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/grid.tsx"
+        },
+        {
+          "path": "components/ui/spinners/guard.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/guard.tsx"
+        },
+        {
+          "path": "components/ui/spinners/heart.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/heart.tsx"
+        },
+        {
+          "path": "components/ui/spinners/hoop.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/hoop.tsx"
+        },
+        {
+          "path": "components/ui/spinners/impulse.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/impulse.tsx"
+        },
+        {
+          "path": "components/ui/spinners/jellyfish.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/jellyfish.tsx"
+        },
+        {
+          "path": "components/ui/spinners/magic.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/magic.tsx"
+        },
+        {
+          "path": "components/ui/spinners/metro.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/metro.tsx"
+        },
+        {
+          "path": "components/ui/spinners/pong.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/pong.tsx"
+        },
+        {
+          "path": "components/ui/spinners/pulse.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/pulse.tsx"
+        },
+        {
+          "path": "components/ui/spinners/push.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/push.tsx"
+        },
+        {
+          "path": "components/ui/spinners/rainbow.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/rainbow.tsx"
+        },
+        {
+          "path": "components/ui/spinners/ring.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/ring.tsx"
+        },
+        {
+          "path": "components/ui/spinners/rotate.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/rotate.tsx"
+        },
+        {
+          "path": "components/ui/spinners/sequence.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/sequence.tsx"
+        },
+        {
+          "path": "components/ui/spinners/sphere.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/sphere.tsx"
+        },
+        {
+          "path": "components/ui/spinners/spiral.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/spiral.tsx"
+        },
+        {
+          "path": "components/ui/spinners/stage.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/stage.tsx"
+        },
+        {
+          "path": "components/ui/spinners/swap.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/swap.tsx"
+        },
+        {
+          "path": "components/ui/spinners/swish.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/swish.tsx"
+        },
+        {
+          "path": "components/ui/spinners/trace.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/trace.tsx"
+        },
+        {
+          "path": "components/ui/spinners/wave.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/wave.tsx"
+        },
+        {
+          "path": "components/ui/spinners/whisper.tsx",
+          "type": "registry:component",
+          "target": "components/ui/spinners/whisper.tsx"
+        }
+      ],
+      "css": "@keyframes spinner-ball {\n  0% {\n    transform: translateX(0) scale(1);\n  }\n  25% {\n    transform: translateX(calc(var(--spinner-size, 40px) / 2)) scale(0.25);\n  }\n  50% {\n    transform: translateX(0) scale(1);\n  }\n  75% {\n    transform: translateX(calc(var(--spinner-size, 40px) / -2)) scale(0.25);\n  }\n  100% {\n    transform: translateX(0) scale(1);\n  }\n}\n\n@keyframes spinner-grid {\n  0% {\n    top: var(--spinner-y, 0px);\n    left: var(--spinner-x, 0px);\n  }\n  50% {\n    width: calc(var(--spinner-size, 40px) / 4);\n    height: calc(var(--spinner-size, 40px) / 4);\n    top: calc(var(--spinner-size, 40px) / 2 - var(--spinner-size, 40px) / 8);\n    left: calc(var(--spinner-size, 40px) / 2 - var(--spinner-size, 40px) / 8);\n  }\n  100% {\n    top: var(--spinner-y, 0px);\n    left: var(--spinner-x, 0px);\n  }\n}\n\n@keyframes spinner-swap {\n  0% {\n    top: var(--spinner-y, 0px);\n    left: var(--spinner-x, 0px);\n  }\n  50% {\n    top: var(--spinner-swap-mid-y, 0px);\n    left: var(--spinner-swap-mid-x, 0px);\n  }\n  100% {\n    top: var(--spinner-y, 0px);\n    left: var(--spinner-x, 0px);\n  }\n}\n\n@keyframes spinner-bars {\n  0% {\n    width: calc(var(--spinner-size, 40px) / 20);\n  }\n  50% {\n    width: calc(var(--spinner-size, 40px) / 6);\n  }\n  100% {\n    width: calc(var(--spinner-size, 40px) / 20);\n  }\n}\n\n@keyframes spinner-wave {\n  25% {\n    transform: skewY(25deg);\n  }\n  50% {\n    height: 100%;\n    margin-top: 0;\n  }\n  75% {\n    transform: skewY(-25deg);\n  }\n}\n\n@keyframes spinner-push {\n  15% {\n    transform: scaleY(1) translateX(calc(10 * var(--spinner-size-unit, 1px)));\n  }\n  90% {\n    transform: scaleY(0.05) translateX(calc(-5 * var(--spinner-size-unit, 1px)));\n  }\n  100% {\n    transform: scaleY(0.05) translateX(calc(-5 * var(--spinner-size-unit, 1px)));\n  }\n}\n\n@keyframes spinner-firework {\n  0% {\n    opacity: 1;\n    transform: scale(0.1);\n  }\n  25% {\n    opacity: 0.85;\n  }\n  100% {\n    transform: scale(1);\n    opacity: 0;\n  }\n}\n\n@keyframes spinner-stage {\n  0% {\n    top: var(--spinner-y, 0px);\n    left: var(--spinner-x, 0px);\n  }\n  25% {\n    top: var(--spinner-y, 0px);\n    left: var(--spinner-x, 0px);\n    opacity: 0;\n  }\n  50% {\n    top: calc(var(--spinner-y, 0px) + var(--spinner-size, 40px) / 2);\n    left: var(--spinner-x, 0px);\n    opacity: 0;\n  }\n  100% {\n    top: var(--spinner-y, 0px);\n    left: var(--spinner-x, 0px);\n    opacity: 1;\n  }\n}\n\n@keyframes spinner-heart {\n  0% {\n    transform: scale(1);\n  }\n  25% {\n    transform: scale(0.75);\n  }\n  50% {\n    transform: scale(1);\n  }\n  65% {\n    transform: scale(1);\n  }\n  80% {\n    transform: scale(0.75);\n  }\n  100% {\n    transform: scale(1);\n  }\n}\n\n@keyframes spinner-guard {\n  0% {\n    transform: rotateY(90deg);\n  }\n  50% {\n    transform: rotateY(0deg);\n  }\n  100% {\n    transform: rotateY(90deg);\n  }\n}\n\n@keyframes spinner-circle {\n  0% {\n    transform: rotate(0);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}\n\n@keyframes spinner-spiral {\n  0% {\n    transform: rotateX(0deg);\n  }\n  25% {\n    transform: rotateX(-90deg);\n  }\n  50% {\n    transform: rotateX(-180deg);\n  }\n  75% {\n    transform: rotateX(-270deg);\n  }\n  100% {\n    transform: rotateX(-360deg);\n  }\n}\n\n@keyframes spinner-pulse {\n  0% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0;\n  }\n  100% {\n    opacity: 1;\n  }\n}\n\n@keyframes spinner-sequence {\n  0% {\n    top: var(--spinner-size, 40px);\n    transform: rotateY(0deg);\n  }\n  30% {\n    top: 0;\n    transform: rotateY(90deg);\n  }\n  100% {\n    transform: rotateY(0deg);\n    top: calc(var(--spinner-size, 40px) * -1);\n  }\n}\n\n@keyframes spinner-domino {\n  0% {\n    transform: translateX(var(--spinner-domino-t0, 0px)) rotate(0deg);\n    opacity: 0;\n  }\n  14.28% {\n    transform: translateX(var(--spinner-domino-t1, 0px)) rotate(0deg);\n    opacity: 1;\n  }\n  28.56% {\n    transform: translateX(var(--spinner-domino-t2, 0px)) rotate(0deg);\n    opacity: 1;\n  }\n  37.12% {\n    transform: translateX(var(--spinner-domino-t3, 0px)) rotate(0deg);\n    opacity: 1;\n  }\n  42.84% {\n    transform: translateX(var(--spinner-domino-t4, 0px)) rotate(10deg);\n    opacity: 1;\n  }\n  57.12% {\n    transform: translateX(var(--spinner-domino-t5, 0px)) rotate(40deg);\n    opacity: 1;\n  }\n  71.4% {\n    transform: translateX(var(--spinner-domino-t6, 0px)) rotate(62deg);\n    opacity: 1;\n  }\n  85.68% {\n    transform: translateX(var(--spinner-domino-t7, 0px)) rotate(72deg);\n    opacity: 1;\n  }\n  100% {\n    transform: translateX(var(--spinner-domino-t8, 0px)) rotate(74deg);\n    opacity: 0;\n  }\n}\n\n@keyframes spinner-impulse {\n  0% {\n    background: var(--spinner-back-color, currentColor);\n    transform: scale(1);\n    animation-timing-function: cubic-bezier(1, 0, 0.7, 1);\n  }\n  40% {\n    background: var(--spinner-front-color, currentColor);\n    transform: scale(1.5);\n    animation-timing-function: cubic-bezier(0.3, 0, 0, 1);\n  }\n  72.5% {\n    background: var(--spinner-back-color, currentColor);\n    transform: scale(1);\n    animation-timing-function: linear;\n  }\n  100% {\n    background: var(--spinner-back-color, currentColor);\n    transform: scale(1);\n  }\n}\n\n@keyframes spinner-cube {\n  from {\n    transform: rotateX(0) rotateY(0);\n  }\n  to {\n    transform: rotateX(360deg) rotateY(360deg);\n  }\n}\n\n@keyframes spinner-fill-rotate {\n  0% {\n    transform: rotate(0deg);\n  }\n  25% {\n    transform: rotate(180deg);\n  }\n  50% {\n    transform: rotate(180deg);\n  }\n  75% {\n    transform: rotate(360deg);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}\n\n@keyframes spinner-fill {\n  0% {\n    height: 0%;\n  }\n  25% {\n    height: 0%;\n  }\n  50% {\n    height: 100%;\n  }\n  75% {\n    height: 100%;\n  }\n  100% {\n    height: 0%;\n  }\n}\n\n@keyframes spinner-sphere-rotate {\n  to {\n    transform: rotate(360deg);\n  }\n}\n\n@keyframes spinner-sphere {\n  0% {\n    transform: translateX(var(--spinner-x, 0px)) translateY(var(--spinner-y, 0px)) scale(1);\n  }\n  5% {\n    transform: translateX(calc(var(--spinner-size, 30px) / -12)) translateY(calc(var(--spinner-size, 30px) / -12)) scale(0);\n  }\n  50% {\n    transform: translateX(calc(var(--spinner-size, 30px) / -12)) translateY(calc(var(--spinner-size, 30px) / -12)) scale(0);\n  }\n  55% {\n    transform: translateX(var(--spinner-x, 0px)) translateY(var(--spinner-y, 0px)) scale(1);\n  }\n}\n\n@keyframes spinner-flag {\n  0% {\n    transform: translateY(0);\n    opacity: 1;\n  }\n  50% {\n    transform: translateY(calc(var(--spinner-size, 40px) / -5));\n    opacity: 0.25;\n  }\n  100% {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n@keyframes spinner-clap-rotate {\n  50% {\n    transform: rotate(180deg) scale(1.125);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}\n\n@keyframes spinner-clap {\n  0% {\n    transform: translateX(var(--spinner-x, 0px)) translateY(var(--spinner-y, 0px)) scale(1.25);\n  }\n  5% {\n    transform: translateX(var(--spinner-x, 0px)) translateY(var(--spinner-y, 0px)) scale(1.75);\n  }\n  50% {\n    transform: translateX(var(--spinner-x, 0px)) translateY(var(--spinner-y, 0px)) scale(0.25);\n  }\n  55% {\n    background-color: var(--spinner-back-color, currentColor);\n    transform: translateX(var(--spinner-x, 0px)) translateY(var(--spinner-y, 0px)) scale(1);\n  }\n}\n\n@keyframes spinner-rotate {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(1440deg);\n    opacity: 0.05;\n  }\n}\n\n@keyframes spinner-swish {\n  50% {\n    transform: scale(0);\n    background-color: var(--spinner-back-color, currentColor);\n  }\n}\n\n@keyframes spinner-goo-rotate {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}\n\n@keyframes spinner-goo {\n  0% {\n    transform: translateY(0) scale(1);\n  }\n  50% {\n    transform: translateY(var(--spinner-translate-to, 0px)) scale(0.8);\n  }\n  100% {\n    transform: translateY(0) scale(1);\n  }\n}\n\n@keyframes spinner-comb {\n  to {\n    transform: rotate(450deg);\n  }\n}\n\n@keyframes spinner-pong-player {\n  0% {\n    top: var(--spinner-pong-player-top-a, 0px);\n  }\n  50% {\n    top: var(--spinner-pong-player-top-b, 0px);\n  }\n  100% {\n    top: var(--spinner-pong-player-top-a, 0px);\n  }\n}\n\n@keyframes spinner-pong-ball {\n  0% {\n    top: calc(var(--spinner-size, 60px) / 3.5 - var(--spinner-size, 60px) / 8);\n    left: calc(var(--spinner-size, 60px) / 12);\n  }\n  25% {\n    top: calc(var(--spinner-size, 60px) / 3.5);\n    left: calc(var(--spinner-size, 60px) - var(--spinner-size, 60px) / 8);\n  }\n  50% {\n    top: calc(var(--spinner-size, 60px) / 1.75 - var(--spinner-size, 60px) / 8);\n    left: calc(var(--spinner-size, 60px) / 12);\n  }\n  75% {\n    top: calc(var(--spinner-size, 60px) / 3.5);\n    left: calc(var(--spinner-size, 60px) - var(--spinner-size, 60px) / 8);\n  }\n  100% {\n    top: calc(var(--spinner-size, 60px) / 3.5 - var(--spinner-size, 60px) / 8);\n    left: calc(var(--spinner-size, 60px) / 12);\n  }\n}\n\n@keyframes spinner-rainbow {\n  0% {\n    border-width: calc(10 * var(--spinner-size-unit, 1px));\n  }\n  25% {\n    border-width: calc(3 * var(--spinner-size-unit, 1px));\n  }\n  50% {\n    transform: rotate(115deg);\n    border-width: calc(10 * var(--spinner-size-unit, 1px));\n  }\n  75% {\n    border-width: calc(3 * var(--spinner-size-unit, 1px));\n  }\n  100% {\n    border-width: calc(10 * var(--spinner-size-unit, 1px));\n  }\n}\n\n@keyframes spinner-ring-first {\n  0% {\n    box-shadow: inset 0 0 0 calc(var(--spinner-size, 30px) / 10) var(--spinner-color, currentColor);\n    opacity: 1;\n  }\n  50%,\n  100% {\n    box-shadow: inset 0 0 0 0 var(--spinner-color, currentColor);\n    opacity: 0;\n  }\n}\n\n@keyframes spinner-ring-second {\n  0%,\n  50% {\n    box-shadow: inset 0 0 0 0 var(--spinner-color, currentColor);\n    opacity: 0;\n  }\n  100% {\n    box-shadow: inset 0 0 0 calc(var(--spinner-size, 30px) / 10) var(--spinner-color, currentColor);\n    opacity: 1;\n  }\n}\n\n@keyframes spinner-hoop {\n  0% {\n    opacity: 0;\n    border-color: var(--spinner-color, currentColor);\n    transform: rotateX(65deg) rotateY(45deg) translateZ(calc(var(--spinner-size, 45px) * -1.5)) scale(0.1);\n  }\n  40% {\n    opacity: 1;\n    transform: rotateX(0deg) rotateY(20deg) translateZ(0) scale(1);\n  }\n  100% {\n    opacity: 0;\n    transform: rotateX(65deg) rotateY(-45deg) translateZ(calc(var(--spinner-size, 45px) * -1.5)) scale(0.1);\n  }\n}\n\n@keyframes spinner-flapper {\n  100% {\n    opacity: 0;\n    transform: translateX(var(--spinner-x, 0px)) translateY(var(--spinner-y, 0px)) scale(1);\n  }\n}\n\n@keyframes spinner-magic {\n  100% {\n    transform: translateX(-50%) translateY(-50%) rotate(360deg);\n  }\n}\n\n@keyframes spinner-jellyfish {\n  0% {\n    transform: translateY(calc(var(--spinner-size, 60px) / -5));\n  }\n  50% {\n    transform: translateY(calc(var(--spinner-size, 60px) / 4));\n  }\n  100% {\n    transform: translateY(calc(var(--spinner-size, 60px) / -5));\n  }\n}\n\n@keyframes spinner-trace {\n  0% {\n    border: calc(var(--spinner-size, 35px) / 10) solid var(--spinner-back-color, currentColor);\n  }\n  25% {\n    border: calc(var(--spinner-size, 35px) / 10) solid var(--spinner-front-color, currentColor);\n  }\n  50% {\n    border: calc(var(--spinner-size, 35px) / 10) solid var(--spinner-back-color, currentColor);\n  }\n  100% {\n    border: calc(var(--spinner-size, 35px) / 10) solid var(--spinner-back-color, currentColor);\n  }\n}\n\n@keyframes spinner-trace-move {\n  25% {\n    transform: translate(calc(var(--spinner-size, 35px) / 2 + var(--spinner-size, 35px) / 10), 0);\n  }\n  50% {\n    transform: translate(\n      calc(var(--spinner-size, 35px) / 2 + var(--spinner-size, 35px) / 10),\n      calc(var(--spinner-size, 35px) / 2 + var(--spinner-size, 35px) / 10)\n    );\n  }\n  75% {\n    transform: translate(0, calc(var(--spinner-size, 35px) / 2 + var(--spinner-size, 35px) / 10));\n  }\n  100% {\n    transform: translate(0, 0);\n  }\n}\n\n@keyframes spinner-classic {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n\n@keyframes spinner-whisper {\n  0% {\n    transform: scale(1, 1);\n    opacity: 1;\n    background-color: var(--spinner-back-color, currentColor);\n  }\n  100% {\n    transform: scale(0, 0);\n    opacity: 0;\n    background-color: var(--spinner-front-color, currentColor);\n  }\n}\n\n@keyframes spinner-whisper-spin {\n  0% {\n    transform: rotate(0deg);\n  }\n  25% {\n    transform: rotate(90deg);\n  }\n  50% {\n    transform: rotate(180deg);\n  }\n  75% {\n    transform: rotate(270deg);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}\n\n@keyframes spinner-metro-rotate {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(-360deg);\n  }\n}\n\n@keyframes spinner-metro-ball {\n  0% {\n    opacity: 0;\n  }\n  100% {\n    opacity: 1;\n  }\n}\n\n.spinner-delay-0 {\n  animation-delay: 0s;\n}\n\n.spinner-delay-1 {\n  animation-delay: 0.05s;\n}\n\n.spinner-delay-2 {\n  animation-delay: 0.1s;\n}\n\n.spinner-delay-3 {\n  animation-delay: 0.15s;\n}\n\n.spinner-delay-4 {\n  animation-delay: 0.2s;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  [role=\"status\"] * {\n    animation-duration: 0s !important;\n    animation-play-state: paused !important;\n  }\n}"
+    }
+  ]
+}
