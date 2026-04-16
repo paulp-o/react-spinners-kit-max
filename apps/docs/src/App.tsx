@@ -75,7 +75,7 @@ const twoColorSet = new Set<SpinnerVariant>([
 ]);
 
 const installCommand =
-  "npx shadcn add https://paulp-o.github.io/react-spinners-kit-max/r/registry.json";
+  "npx shadcn add https://paulp-o.github.io/react-spinners-kit-max/r/spinner.json";
 
 type GalleryFilter = "all" | "one" | "two";
 type PresetSize = "sm" | "md" | "lg" | "xl";

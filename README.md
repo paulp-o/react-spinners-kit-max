@@ -32,7 +32,7 @@ react-spinners-kit-max is a complete modernization of the classic react-spinners
 ### Option 1: shadcn (Copy-Paste)
 
 ```bash
-npx shadcn add https://paulp-o.github.io/react-spinners-kit-max/r/spinner
+npx shadcn add https://paulp-o.github.io/react-spinners-kit-max/r/spinner.json
 ```
 
 This installs the Spinner component directly into your project's `components/ui/` directory. You control the code completely.

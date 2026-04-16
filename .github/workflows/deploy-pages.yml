@@ -32,8 +32,8 @@ jobs:
       - name: Build spinners package
         run: pnpm --filter ./packages/spinners build
 
-      - name: Copy registry into docs public
-        run: pnpm --filter ./packages/spinners registry:copy
+      - name: Build registry
+        run: pnpm --filter ./packages/spinners registry:build
 
       - name: Build docs app
         run: pnpm --filter ./apps/docs build
